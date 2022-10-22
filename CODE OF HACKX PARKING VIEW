@@ -1,0 +1,52 @@
+#include <LiquidCrystal.h>
+int pirpin=8;
+int buzzer_pin=13;
+int value;
+int trigpin=9;
+int echopin=10;
+const int rs = 12, en = 11, d4 = 5, d5 = 4, d6 = 3, d7 = 2;
+LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
+void setup() {
+ lcd.begin(16, 2);
+ Serial.begin(9600);
+ pinMode(trigpin,OUTPUT);
+ pinMode(echopin,INPUT);
+ lcd.print("Empty slots");
+}
+
+void loop() {
+ long duration,distance;
+ digitalWrite(trigpin,HIGH);
+ delay(1000);
+ digitalWrite(trigpin,LOW);
+ duration=pulseIn(echopin,HIGH);
+ distance=((duration/2)/29.1);
+ Serial.print(distance);
+ Serial.println("CM");
+
+ 
+ if (distance<5){
+  delay(60000);
+  if (value==1){
+  Serial.println("Motion detected");
+  digitalWrite(buzzer_pin,HIGH);
+  }
+ else if (value==0){
+  Serial.println("No motion");
+   lcd.setCursor(0, 1);
+   lcd.print(" ");
+  }
+ 
+   }
+ else{
+  lcd_display(1);
+  }
+ 
+}
+void lcd_display(int num1) {
+   lcd.setCursor(0, 1);
+   lcd.print(1);
+   }
+
+
+
